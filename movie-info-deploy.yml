@@ -1,0 +1,33 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: movie-info
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: movie-info
+    spec:
+      containers:
+        - name: movie-info
+          image: gcr.io/govindacloud09072019/movie-info
+          ports:
+            - containerPort: 9091
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: movie-info
+  labels:
+    name: movie-info
+spec:
+  ports:
+    - port: 9091
+      targetPort: 9091
+      protocol: TCP
+  selector:
+    app: springboot-rest-gcp
+  type: LoadBalancer
